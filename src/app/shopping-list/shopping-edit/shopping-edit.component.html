@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-xs-12">
+    <form
+      [formGroup]="shoppingListForm"
+      (ngSubmit)="handleAddIngredient($event)"
+    >
+      <br />
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            #name
+            required
+            formControlName="name"
+            placeholder="Enter name"
+          />
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="amount">Amount</label>
+          <input
+            type="number"
+            id="amount"
+            class="form-control"
+            #amount
+            required
+            formControlName="amount"
+            placeholder="Enter amount"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            class="btn btn-success"
+            style="margin-right: 10px; outline: none"
+            type="submit"
+            [disabled]="!shoppingListForm.valid"
+          >
+            {{ !editMode ? "Add Ingredient" : "Edit Ingredient" }}
+          </button>
+          <button
+            class="btn btn-primary"
+            style="margin-right: 10px; outline: none"
+            type="button"
+            (click)="handleResetForm()"
+          >
+            Reset
+          </button>
+          <button
+            *ngIf="editMode"
+            class="btn btn-danger"
+            style="outline: none"
+            type="button"
+            (click)="handleDeleteIngredient()"
+          >
+            Delete Ingredient
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

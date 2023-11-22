@@ -1,0 +1,39 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a routerLink="/recipes" style="cursor: pointer" class="navbar-brand"
+        >RECIPE BOOK</a
+      >
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li routerLinkActive="active-link">
+          <a
+            style="cursor: pointer; color: #0086ff; font-weight: 350"
+            routerLink="/recipes"
+            >Recipes</a
+          >
+        </li>
+        <li routerLinkActive="active-link">
+          <a
+            style="cursor: pointer; color: #0086ff; font-weight: 350"
+            routerLink="/shopping-list"
+            >Shopping List</a
+          >
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" toggleDropdown>
+          <a style="cursor: pointer" class="dropdown-toggle" role="button"
+            >Manage<span class="caret"></span
+          ></a>
+          <ul class="dropdown-menu">
+            <li><a style="cursor: pointer">Save Recipe</a></li>
+            <li><a style="cursor: pointer">Fetch Recipes</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

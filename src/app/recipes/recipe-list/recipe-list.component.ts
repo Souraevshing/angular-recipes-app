@@ -1,0 +1,29 @@
+import { Component, OnInit } from '@angular/core';
+import { Recipe } from '../recipe.model';
+import { RecipeService } from '../recipe.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({
+  selector: 'app-recipe-list',
+  templateUrl: './recipe-list.component.html',
+  styleUrl: './recipe-list.component.css',
+})
+export class RecipeListComponent implements OnInit {
+  recipes!: Recipe[];
+
+  constructor(
+    private recipeService: RecipeService,
+    private route: Router,
+    private router: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.recipes = this.recipeService.getAllRecipes();
+  }
+
+  //navigating to `/create` route and pointing relative route to the parent component
+  //passing relative route having current url so as to navigate to and fro from parent route
+  handleAddNewRecipe(): void {
+    this.route.navigate(['create'], { relativeTo: this.router });
+  }
+}
