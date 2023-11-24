@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -28,10 +22,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    //initializing form
     this.shoppingListForm = this.formBuilder.group({
       name: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(0)]],
     });
+
     //if user is in edit mode, then set `editMode` to true and set `editItemIndex` to current index of edited item
     //set `currentlyEditedItem` by index or id fetched from url params
     this.subscription = this.shoppingListService.isEditing.subscribe(
@@ -64,7 +60,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
         this.shoppingListForm.get('name')?.value,
         this.shoppingListForm.get('amount')?.value
       );
-      if (this.editMode && this.editedItemIndex >= 0) {
+      if (this.editMode) {
         //user is in edit mode currently, so update the existing ingredient
         this.shoppingListService.updateIngredientToShoppingList(
           this.editedItemIndex,
@@ -74,6 +70,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
         ////user is in create mode currently, so add the new ingredient
         this.shoppingListService.addIngredient(newIngredient);
       }
+      this.editMode = false;
       this.shoppingListForm.reset();
     }
   }

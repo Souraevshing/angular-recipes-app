@@ -1,7 +1,11 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a routerLink="/recipes" style="cursor: pointer" class="navbar-brand"
+      <a
+        routerLink="/recipes"
+        routerLinkActive="active-nav-link"
+        style="cursor: pointer"
+        class="navbar-brand"
         >RECIPE BOOK</a
       >
     </div>
@@ -10,14 +14,24 @@
       <ul class="nav navbar-nav">
         <li routerLinkActive="active-link">
           <a
-            style="cursor: pointer; color: #0086ff; font-weight: 350"
+            style="
+              cursor: pointer;
+              color: mediumspringgreen;
+              font-weight: 400;
+              letter-spacing: 2px;
+            "
             routerLink="/recipes"
             >Recipes</a
           >
         </li>
         <li routerLinkActive="active-link">
           <a
-            style="cursor: pointer; color: #0086ff; font-weight: 350"
+            style="
+              cursor: pointer;
+              color: mediumspringgreen;
+              font-weight: 400;
+              letter-spacing: 2px;
+            "
             routerLink="/shopping-list"
             >Shopping List</a
           >
@@ -25,7 +39,10 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" toggleDropdown>
-          <a style="cursor: pointer" class="dropdown-toggle" role="button"
+          <a
+            style="cursor: pointer; background-color: black; color: #fff"
+            class="dropdown-toggle manage-nav-link"
+            role="button"
             >Manage<span class="caret"></span
           ></a>
           <ul class="dropdown-menu">

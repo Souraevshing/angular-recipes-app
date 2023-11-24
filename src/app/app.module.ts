@@ -18,6 +18,8 @@ import { SelectRecipeComponent } from './recipes/select-recipe/select-recipe.com
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ShoppingListService } from './shopping-list/shopping-list.service';
+import { RecipeService } from './recipes/recipe.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
-  providers: [provideClientHydration()],
+  providers: [ShoppingListService, RecipeService, provideClientHydration()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

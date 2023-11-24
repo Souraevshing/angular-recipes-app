@@ -42,4 +42,9 @@ export class RecipeDetailsComponent implements OnInit {
     //the final url will be `http://localhost:4200/recipes/1/edit`
     //this.router.navigate(['../',this.id,'edit'], { relativeTo: this.route });
   }
+
+  handleDeleteRecipe() {
+    this.recipeService.deleteRecipeById(this.id);
+    this.router.navigate(['/recipes']);
+  }
 }
