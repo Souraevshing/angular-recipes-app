@@ -20,3 +20,8 @@ textarea.ng-invalid.ng-touched input.ng-invalid.ng-touched,
 textarea.ng-invalid.ng-touched {
   border: 1px solid red;
 }
+
+img {
+  max-height: 250px;
+  max-width: 90px;
+}

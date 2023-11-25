@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
@@ -10,22 +10,14 @@ import { Subject } from 'rxjs';
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
 
-  private recipes: Recipe[] = [
-    new Recipe(
-      'Chicken Curry',
-      'fuck chicken',
-      'https://images.unsplash.com/photo-1606471191009-63994c53433b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNoaWNrZW4lMjBjdXJyeXxlbnwwfHwwfHx8MA%3D%3D',
-      [new Ingredient('Chicken', 10)]
-    ),
-    new Recipe(
-      'Panyeer',
-      'fuck panyeer',
-      'https://media.istockphoto.com/id/1460543157/photo/fry-pepper-paneer.jpg?s=1024x1024&w=is&k=20&c=4mSkUwr3ZBD4UYmtzJ-BWN9zkMrxt17zYLulY34_9bY=',
-      [new Ingredient('Panyeer', 5)]
-    ),
-  ];
+  private recipes: Recipe[] = [];
 
   constructor(private shoppingListService: ShoppingListService) {}
+
+  setRecipesFromDatabase(recipes: Recipe[]): void {
+    this.recipes = recipes;
+    this.recipesChanged.next(recipes.slice());
+  }
 
   getAllRecipes(): Recipe[] {
     return this.recipes.slice();
