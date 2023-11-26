@@ -26,6 +26,8 @@ import {
   provideHttpClient,
   withFetch,
 } from '@angular/common/http';
+import { AuthComponent } from './auth/auth.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import {
     SelectRecipeComponent,
     RecipeEditComponent,
     FooterComponent,
+    AuthComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

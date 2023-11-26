@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../firebase-auth.service';
+import { FirebaseAuthService } from '../firebase-auth.service';
+import { AuthService } from '../../auth/auth.service';
+import { AuthComponent } from '../../auth/auth.component';
 
 @Component({
   selector: 'app-header',
@@ -7,13 +9,15 @@ import { AuthService } from '../firebase-auth.service';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private firbaseAuthService: FirebaseAuthService) {}
 
   handleSaveRecipes(): void {
-    this.authService.saveAllRecipes();
+    this.firbaseAuthService.saveAllRecipes();
   }
 
   handleFetchRecipes() {
-    this.authService.getAllRecipes().subscribe();
+    this.firbaseAuthService.getAllRecipes().subscribe();
   }
+
+  signUpUser(): void {}
 }

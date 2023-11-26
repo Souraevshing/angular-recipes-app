@@ -4,8 +4,7 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Recipe } from './recipe.model';
-import { AuthService } from '../shared/firebase-auth.service';
+import { FirebaseAuthService } from '../shared/firebase-auth.service';
 import { RecipeService } from './recipe.service';
 
 @Injectable({
@@ -13,7 +12,7 @@ import { RecipeService } from './recipe.service';
 })
 export class RecipeResolver implements Resolve<any> {
   constructor(
-    private authService: AuthService,
+    private authService: FirebaseAuthService,
     private recipeService: RecipeService
   ) {}
 

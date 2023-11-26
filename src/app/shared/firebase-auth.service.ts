@@ -8,7 +8,7 @@ import { environment } from '../../environments/environmet.prod';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class FirebaseAuthService {
   constructor(private http: HttpClient, private recipeService: RecipeService) {}
 
   saveAllRecipes() {
