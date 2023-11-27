@@ -20,14 +20,12 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { RecipeService } from './recipes/recipe.service';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  provideHttpClient,
-  withFetch,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthComponent } from './auth/auth.component';
-import { LoadingComponent } from './shared/loading/loading.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastService } from './shared/toast.service';
+import { AuthInterceptor } from './auth/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -44,15 +42,32 @@ import { LoadingComponent } from './shared/loading/loading.component';
     RecipeEditComponent,
     FooterComponent,
     AuthComponent,
-    LoadingComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      extendedTimeOut: 500,
+      closeButton: true,
+      preventDuplicates: true,
+      progressBar: true,
+      progressAnimation: 'decreasing',
+      tapToDismiss: true,
+      easeTime: 100,
+      easing: 'ease-in-out',
+    }),
   ],
-  providers: [ShoppingListService, RecipeService, provideClientHydration()],
+  providers: [
+    ShoppingListService,
+    RecipeService,
+    ToastService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    provideClientHydration(),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

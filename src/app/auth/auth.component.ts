@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { AuthSignIn, AuthSignUp } from './auth.model';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from '../shared/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -13,11 +14,12 @@ export class AuthComponent implements OnInit {
   authForm!: FormGroup;
   isLogin: boolean = false;
   isSignUp: boolean = false;
-  public authSignIn!: AuthSignIn;
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -42,25 +44,22 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  handleSubmit(): void {
-    console.log(this.authForm.value);
-  }
-
   signUpUser(): void {
     if (this.authForm.valid) {
       const email: string = this.authForm.value.email;
       const password: string = this.authForm.value.password;
       const returnSecureToken: boolean = true;
+
       this.authService
         .signUpUser(email, password, returnSecureToken)
         .subscribe({
           next: (res: AuthSignUp) => {
-            if (res.idToken) {
-              this.isSignUp = true;
-            }
+            this.router.navigate(['/recipes']);
+            this.toastService.showSuccess(`Success!`, 'Signup successful');
+            this.isSignUp = true;
           },
-          error: (err: HttpErrorResponse) => {
-            console.log(err.error);
+          error: (err: string) => {
+            this.toastService.showError(err, 'Something went wrong');
             this.isSignUp = false;
           },
         });
@@ -72,17 +71,24 @@ export class AuthComponent implements OnInit {
     if (this.authForm.valid) {
       const email = this.authForm.value.email;
       const password = this.authForm.value.password;
-      this.authService.signInUser(email, password).subscribe({
-        next: (res: AuthSignIn) => {
-          if (res.idToken) {
+      const returnSecureToken: boolean = true;
+
+      this.authService
+        .signInUser(email, password, returnSecureToken)
+        .subscribe({
+          next: (res: AuthSignIn) => {
             this.isLogin = true;
-          }
-        },
-        error: (err: HttpErrorResponse) => {
-          console.log(err.error);
-          this.isLogin = false;
-        },
-      });
+            this.router.navigate(['/recipes']);
+            this.toastService.showSuccess(
+              `Welcome ${res.email}`,
+              'Login successful'
+            );
+          },
+          error: (err: string) => {
+            this.toastService.showError(err, 'Something went wrong');
+            this.isLogin = false;
+          },
+        });
     }
     this.authForm.reset();
   }

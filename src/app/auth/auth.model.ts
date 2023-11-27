@@ -5,6 +5,7 @@ export class AuthSignIn {
     public idToken?: string,
     public kind?: string,
     public localId?: string,
+    public expiresIn?: string,
     public registered?: boolean
   ) {}
 }

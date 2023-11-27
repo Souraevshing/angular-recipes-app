@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/recipes',
+    redirectTo: '/auth',
   },
   {
     path: 'recipes',

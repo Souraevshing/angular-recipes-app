@@ -1,9 +1,9 @@
 const environment = {
   production: true,
   url: 'https://angular-recipes-app-production-default-rtdb.firebaseio.com/recipes.json',
-  authSignUpUrl:
+  authSignUp:
     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDd18pVpN-kRdy34sIhZuZWcTzUTaI5Jy0',
-  authSignInUrl:
+  authSignIn:
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDd18pVpN-kRdy34sIhZuZWcTzUTaI5Jy0',
 };
 
