@@ -73,22 +73,20 @@ export class AuthComponent implements OnInit {
       const password = this.authForm.value.password;
       const returnSecureToken: boolean = true;
 
-      this.authService
-        .signInUser(email, password, returnSecureToken)
-        .subscribe({
-          next: (res: AuthSignIn) => {
-            this.isLogin = true;
-            this.router.navigate(['/recipes']);
-            this.toastService.showSuccess(
-              `Welcome ${res.email}`,
-              'Login successful'
-            );
-          },
-          error: (err: string) => {
-            this.toastService.showError(err, 'Something went wrong');
-            this.isLogin = false;
-          },
-        });
+      this.authService.logInUser(email, password, returnSecureToken).subscribe({
+        next: (res: AuthSignIn) => {
+          this.isLogin = true;
+          this.router.navigate(['/recipes']);
+          this.toastService.showSuccess(
+            `Welcome ${res.email}`,
+            'Login successful'
+          );
+        },
+        error: (err: string) => {
+          this.toastService.showError(err, 'Something went wrong');
+          this.isLogin = false;
+        },
+      });
     }
     this.authForm.reset();
   }

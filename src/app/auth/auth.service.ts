@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { AuthSignIn, AuthSignUp } from './auth.model';
 import { User } from './user.model';
 import { Router } from '@angular/router';
+import { ToastService } from '../shared/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,13 @@ export class AuthService {
   //creating and emitting user object to allow all component to subscribe to it and know if user has signed in or not
   //initializing the default user to null since the user is not logged in yet
   user = new BehaviorSubject<User>(new User('', '', '', null));
+  private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toastService: ToastService
+  ) {}
 
   signUpUser(
     email: string,
@@ -40,7 +46,7 @@ export class AuthService {
       );
   }
 
-  signInUser(
+  logInUser(
     email: string,
     password: string,
     returnSecureToken: boolean
@@ -62,14 +68,6 @@ export class AuthService {
           )
         )
       );
-  }
-
-  signOutUser(): void {
-    //when logout, we will assign the user with null to logout,
-    //saving current logged in user to be able to keep the user logged in even if the page is refreshed till the expiration date
-    this.user.next(new User('', '', '', null));
-    this.router.navigate(['/auth']);
-    localStorage.removeItem('_token');
   }
 
   loginAutomatically(): void {
@@ -97,9 +95,39 @@ export class AuthService {
     //if user has valid token, then emit the user to be logged in
     if (loadUserFromLocalStorage.token) {
       this.user.next(loadUserFromLocalStorage);
+      this.toastService.showSuccess(
+        `Welcome ${loadUserFromLocalStorage.email}`,
+        'Welcome back'
+      );
+      const expirationDuration =
+        new Date(userToken._tokenExpirationDate).getTime() -
+        new Date().getTime(); //calculating current time
+      this.logoutAutomatically(expirationDuration);
     }
   }
 
+  logOutUser(): void {
+    //when logout, we will assign the user with null to logout,
+    //saving current logged in user to be able to keep the user logged in even if the page is refreshed till the expiration date
+    this.user.next(new User('', '', '', null));
+    this.router.navigate(['/auth']);
+    localStorage.removeItem('_token');
+    //log out user automatically after the expiration time using setTimeout, setting to null after logout
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
+    this.toastService.showInfo('Logout successfully', 'Logging out');
+  }
+
+  //clearing user from localStorage and logout user automatically
+  logoutAutomatically(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logOutUser();
+    }, expirationDuration);
+  }
+
+  //after emitting user, calling logoutAutomatically by passing expiresIn in milliseconds
   handleAuthentication(
     email: string,
     userId: string,
@@ -109,6 +137,7 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user);
+    this.logoutAutomatically(expiresIn * 1000);
     localStorage.setItem('_token', JSON.stringify(user));
   }
 
