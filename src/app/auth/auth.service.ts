@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environmet.prod';
+import { environment } from '../../environments/environmet';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { AuthSignIn, AuthSignUp } from './auth.model';
 import { User } from './user.model';

@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthSignIn, AuthSignUp } from './auth.model';
 import { ToastService } from '../shared/toast.service';
 import { Router } from '@angular/router';
+import { FirebaseAuthService } from '../shared/firebase-auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -17,6 +18,7 @@ export class AuthComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private firbaseAuthService: FirebaseAuthService,
     private authService: AuthService,
     private toastService: ToastService,
     private router: Router
@@ -76,6 +78,7 @@ export class AuthComponent implements OnInit {
       this.authService.logInUser(email, password, returnSecureToken).subscribe({
         next: (res: AuthSignIn) => {
           this.isLogin = true;
+          this.firbaseAuthService.getAllRecipes().subscribe();
           this.router.navigate(['/recipes']);
           this.toastService.showSuccess(
             `Welcome ${res.email}`,

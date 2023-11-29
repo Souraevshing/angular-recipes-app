@@ -32,11 +32,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   handleSaveRecipes(): void {
-    this.firbaseAuthService.saveAllRecipes();
+    if (this.isUserAuthenticated) this.firbaseAuthService.saveAllRecipes();
   }
 
   handleFetchRecipes(): void {
-    this.firbaseAuthService.getAllRecipes().subscribe();
+    if (this.isUserAuthenticated)
+      this.firbaseAuthService.getAllRecipes().subscribe();
   }
 
   handleLogOut(): void {
