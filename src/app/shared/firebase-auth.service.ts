@@ -19,11 +19,7 @@ export class FirebaseAuthService {
   saveAllRecipes() {
     const recipes = this.recipeService.getAllRecipes();
 
-    return this.http
-      .put<Recipe[]>(environment.url, recipes)
-      .subscribe((res) => {
-        console.log(res);
-      });
+    return this.http.put<Recipe[]>(environment.url, recipes);
   }
 
   getAllRecipes() {

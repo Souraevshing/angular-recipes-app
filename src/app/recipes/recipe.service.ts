@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Subject } from 'rxjs';
 import { ToastService } from '../shared/toast.service';
+import { Store } from '@ngrx/store';
+import * as ShoppingListActions from '../shopping-list/store/shopping-list.action';
+import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
-
   private recipes: Recipe[] = [];
 
   constructor(
-    private shoppingListService: ShoppingListService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private store: Store<fromShoppingList.AppState>
   ) {}
 
   setRecipesFromDatabase(recipes: Recipe[]): void {
@@ -35,7 +36,7 @@ export class RecipeService {
 
   //add ingredients to recipe
   addRecipeIngredientsToShoppingList(ingredients: Ingredient[]): void {
-    this.shoppingListService.addIngredientsToShoppingList(ingredients);
+    this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
     this.toastService.showSuccess(
       'Success!',
       'Ingredients added to shopping list'

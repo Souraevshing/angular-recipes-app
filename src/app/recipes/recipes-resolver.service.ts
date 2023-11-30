@@ -13,7 +13,7 @@ import { ToastService } from '../shared/toast.service';
 })
 export class RecipeResolver implements Resolve<any> {
   constructor(
-    private authService: FirebaseAuthService,
+    private firebaseAuthService: FirebaseAuthService,
     private recipeService: RecipeService,
     private toastService: ToastService
   ) {}
@@ -24,7 +24,7 @@ export class RecipeResolver implements Resolve<any> {
     //if recipes are not present then only fetch the recipes, else return recipes array in order to prevent excess load on server
     if (recipes.length === 0) {
       this.toastService.showError('Error!', 'No recipes');
-      return this.authService.getAllRecipes();
+      return this.firebaseAuthService.getAllRecipes();
     } else {
       this.toastService.showSuccess('Success!', 'Recipes loaded');
       return recipes;

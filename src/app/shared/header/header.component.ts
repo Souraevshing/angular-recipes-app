@@ -8,7 +8,7 @@ import { userInfo } from 'os';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isUserAuthenticated: boolean = false;
@@ -16,14 +16,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
 
   constructor(
-    private firbaseAuthService: FirebaseAuthService,
+    private firebaseAuthService: FirebaseAuthService,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     //subscribing to user and if user is logged in, setting isUserAuthenticated to true or false otherwise
-    this.subscription = this.authService.user.subscribe((isUserLogIn) => {
-      this.isUserAuthenticated = !!isUserLogIn;
+    this.subscription = this.authService.user.subscribe((user) => {
+      this.isUserAuthenticated = !!user;
     });
   }
 
@@ -32,12 +32,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   handleSaveRecipes(): void {
-    if (this.isUserAuthenticated) this.firbaseAuthService.saveAllRecipes();
+    if (this.isUserAuthenticated) {
+      this.firebaseAuthService.saveAllRecipes().subscribe();
+    }
   }
 
   handleFetchRecipes(): void {
-    if (this.isUserAuthenticated)
-      this.firbaseAuthService.getAllRecipes().subscribe();
+    if (this.isUserAuthenticated) {
+      this.firebaseAuthService.getAllRecipes().subscribe();
+    }
   }
 
   handleLogOut(): void {

@@ -18,7 +18,7 @@ export class AuthComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private firbaseAuthService: FirebaseAuthService,
+    private firebaseAuthService: FirebaseAuthService,
     private authService: AuthService,
     private toastService: ToastService,
     private router: Router
@@ -78,7 +78,7 @@ export class AuthComponent implements OnInit {
       this.authService.logInUser(email, password, returnSecureToken).subscribe({
         next: (res: AuthSignIn) => {
           this.isLogin = true;
-          this.firbaseAuthService.getAllRecipes().subscribe();
+          this.firebaseAuthService.getAllRecipes().subscribe();
           this.router.navigate(['/recipes']);
           this.toastService.showSuccess(
             `Welcome ${res.email}`,
