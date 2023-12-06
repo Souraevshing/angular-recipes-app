@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from './auth.service';
-import { AuthSignIn, AuthSignUp } from './auth.model';
 import { ToastService } from '../shared/toast.service';
-import { Router } from '@angular/router';
-import { FirebaseAuthService } from '../shared/firebase-auth.service';
+import { Store } from '@ngrx/store';
+import * as fromRootReducer from '../store/app.root-reducer';
+import * as AuthActions from './store/auth.action';
 
 @Component({
   selector: 'app-auth',
@@ -18,10 +17,8 @@ export class AuthComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private firebaseAuthService: FirebaseAuthService,
-    private authService: AuthService,
     private toastService: ToastService,
-    private router: Router
+    private store: Store<fromRootReducer.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -52,21 +49,31 @@ export class AuthComponent implements OnInit {
       const password: string = this.authForm.value.password;
       const returnSecureToken: boolean = true;
 
-      this.authService
-        .signUpUser(email, password, returnSecureToken)
-        .subscribe({
-          next: (res: AuthSignUp) => {
-            this.router.navigate(['/recipes']);
-            this.toastService.showSuccess(`Success!`, 'Signup successful');
-            this.isSignUp = true;
-          },
-          error: (err: string) => {
-            this.toastService.showError(err, 'Something went wrong');
-            this.isSignUp = false;
-          },
-        });
+      //dispatching signup action and passing email, password, returnSecureToken
+      this.store.dispatch(
+        new AuthActions.SignupStart({
+          email: email,
+          password: password,
+          returnSecureToken: returnSecureToken,
+        })
+      );
+
+      this.store.select('auth').subscribe((authState) => {
+        if (!authState.loginError?.error) {
+          //this.router.navigate(['/auth']);
+          this.toastService.showSuccess(`Success!`, 'Signup successful');
+          this.isSignUp = true;
+        }
+        if (authState.loginError?.error) {
+          this.toastService.showError(
+            authState.loginError.error,
+            'Something went wrong'
+          );
+          this.isSignUp = false;
+        }
+        this.authForm.reset();
+      });
     }
-    this.authForm.reset();
   }
 
   signInUser(): void {
@@ -75,22 +82,29 @@ export class AuthComponent implements OnInit {
       const password = this.authForm.value.password;
       const returnSecureToken: boolean = true;
 
-      this.authService.logInUser(email, password, returnSecureToken).subscribe({
-        next: (res: AuthSignIn) => {
-          this.isLogin = true;
-          this.firebaseAuthService.getAllRecipes().subscribe();
-          this.router.navigate(['/recipes']);
-          this.toastService.showSuccess(
-            `Welcome ${res.email}`,
-            'Login successful'
+      //dispatching login action and passing email, password, returnSecureToken
+      this.store.dispatch(
+        new AuthActions.LoginStart({
+          email: email,
+          password: password,
+          returnSecureToken,
+        })
+      );
+
+      //select auth from store by subscribing to state's error property
+      this.store.select('auth').subscribe((authState) => {
+        if (!authState.loginError) {
+          //this.router.navigate(['/recipes']);
+          this.toastService.showSuccess(`Welcome ${email}`, 'Login successful');
+        }
+        if (authState.loginError) {
+          this.toastService.showError(
+            `${authState.loginError.error}`,
+            `Something went wrong!`
           );
-        },
-        error: (err: string) => {
-          this.toastService.showError(err, 'Something went wrong');
-          this.isLogin = false;
-        },
+        }
+        this.authForm.reset();
       });
     }
-    this.authForm.reset();
   }
 }

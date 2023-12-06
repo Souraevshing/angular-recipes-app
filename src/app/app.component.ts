@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './auth/auth.service';
+import * as fromRootReducer from './store/app.root-reducer';
+import * as AuthActions from './auth/store/auth.action';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +9,7 @@ import { AuthService } from './auth/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+  constructor(private store: Store<fromRootReducer.AppState>) {}
   //commented since this block of code is redundant
   //currentComponent: string = 'recipe';
 
@@ -17,6 +19,6 @@ export class AppComponent implements OnInit {
 
   //login the user automatically if exists
   ngOnInit(): void {
-    this.authService.loginAutomatically();
+    this.store.dispatch(new AuthActions.AutoLogin());
   }
 }

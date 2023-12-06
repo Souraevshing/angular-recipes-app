@@ -3,8 +3,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { Observable, exhaustMap, map, pipe, take, tap } from 'rxjs';
 import { Recipe } from '../recipes/recipe.model';
-import { environment } from '../../environments/environmet.prod';
+import { environment } from '../../environments/environmet';
 import { AuthService } from '../auth/auth.service';
+import * as fromRootReducer from '../store/app.root-reducer';
+import { Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +15,8 @@ export class FirebaseAuthService {
   constructor(
     private http: HttpClient,
     private recipeService: RecipeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<fromRootReducer.AppState>
   ) {}
 
   saveAllRecipes() {
@@ -31,9 +34,12 @@ export class FirebaseAuthService {
     //exhaustMap((user) => {...}: The exhaustMap operator takes the emitted user from this.authService.user and returns a new observable.
     //If a new user emits while the inner observable is still running, the new user emission will be ignored until the inner observable completes.
 
-    return this.authService.user.pipe(
+    return this.store.select('auth').pipe(
       take(1),
-      exhaustMap((user) => {
+      map((authState) => {
+        return authState.user;
+      }),
+      exhaustMap(() => {
         return this.http.get<Recipe[]>(environment.url).pipe(
           map((recipes) => {
             return recipes.map((recipe) => {

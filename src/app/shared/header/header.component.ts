@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FirebaseAuthService } from '../firebase-auth.service';
-import { AuthService } from '../../auth/auth.service';
-import { AuthComponent } from '../../auth/auth.component';
-import { Subscription } from 'rxjs';
-import { userInfo } from 'os';
-
+import { Subscription, map } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromRootReducer from '../../store/app.root-reducer';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -17,14 +16,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private firebaseAuthService: FirebaseAuthService,
-    private authService: AuthService
+    private store: Store<fromRootReducer.AppState>,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     //subscribing to user and if user is logged in, setting isUserAuthenticated to true or false otherwise
-    this.subscription = this.authService.user.subscribe((user) => {
-      this.isUserAuthenticated = !!user;
-    });
+    this.subscription = this.store
+      .select('auth')
+      .pipe(map((authState) => authState.user))
+      .subscribe((user) => {
+        this.isUserAuthenticated = !!user;
+      });
   }
 
   ngOnDestroy(): void {
@@ -37,15 +40,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleFetchRecipes(): void {
-    if (this.isUserAuthenticated) {
-      this.firebaseAuthService.getAllRecipes().subscribe();
-    }
-  }
-
   handleLogOut(): void {
+    this.router.navigate(['/auth']);
+    localStorage.removeItem('_token')
     this.isUserAuthenticated = false;
-    this.authService.logOutUser();
     this.isLogOut = true;
   }
 }

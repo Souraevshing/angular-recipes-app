@@ -14,7 +14,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './auth/auth-interceptor.service';
 import { SharedModule } from './shared/shared.module';
 import { StoreModule } from '@ngrx/store';
-import { reducers } from './shopping-list/store/index';
+import { EffectsModule } from '@ngrx/effects';
+import * as fromRootReducer from './store/app.root-reducer';
+import { AuthEffects } from './auth/store/auth.effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent],
@@ -23,7 +25,8 @@ import { reducers } from './shopping-list/store/index';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(fromRootReducer.rootReducer),
+    EffectsModule.forRoot([AuthEffects]),
     ToastrModule.forRoot({
       timeOut: 2000,
       extendedTimeOut: 500,
@@ -32,7 +35,7 @@ import { reducers } from './shopping-list/store/index';
       progressBar: true,
       progressAnimation: 'decreasing',
       tapToDismiss: true,
-      easeTime: 100,
+      easeTime: 200,
       easing: 'ease-in-out',
     }),
   ],

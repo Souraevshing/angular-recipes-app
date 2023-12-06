@@ -6,14 +6,15 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, exhaustMap, take } from 'rxjs';
-import { AuthService } from './auth.service';
+import { Observable, exhaustMap, map, take } from 'rxjs';
+import * as fromRootReducer from '../store/app.root-reducer';
+import { Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(private store: Store<fromRootReducer.AppState>) {}
 
   /**
    * @description interceptor for HttpRequests
@@ -26,8 +27,11 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return this.authService.user.pipe(
+    return this.store.select('auth').pipe(
       take(1),
+      map((authState) => {
+        return authState.user;
+      }),
       exhaustMap((user) => {
         /**
          * @description fetch recipes

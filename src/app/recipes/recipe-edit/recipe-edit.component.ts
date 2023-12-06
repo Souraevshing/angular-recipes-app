@@ -68,7 +68,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeName = '';
     let recipeImagePath = '';
     let recipeDescription = '';
-    let recipeIngredients = this.formBuilder.array<FormGroup>([]); //creating ingredients array using FormBuilder
+    const recipeIngredients = this.formBuilder.array<FormGroup>([]); //creating ingredients array using FormBuilder
 
     //if in edit mode, fetch recipe by id and populate in the `recipeEditForm`
     if (this.editMode) {
@@ -78,7 +78,7 @@ export class RecipeEditComponent implements OnInit {
       recipeDescription = recipe.description;
       if (recipe.ingredients) {
         //if recipe has ingredients, iterate over all the ingredients and populate the form
-        for (let ingredient of recipe.ingredients) {
+        for (const ingredient of recipe.ingredients) {
           recipeIngredients.push(
             this.formBuilder.group({
               name: [ingredient.name, Validators.required],
