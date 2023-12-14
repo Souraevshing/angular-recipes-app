@@ -1,17 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
+
 import { FirebaseAuthService } from '../shared/firebase-auth.service';
 import { RecipeService } from './recipe.service';
+
 import { ToastService } from '../shared/toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RecipeResolver implements Resolve<any> {
+export class RecipeResolver implements Resolve<unknown> {
   constructor(
     private firebaseAuthService: FirebaseAuthService,
     private recipeService: RecipeService,

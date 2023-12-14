@@ -1,5 +1,6 @@
-import { ActionReducerMap } from '@ngrx/store';
+/* eslint-disable no-case-declarations */
 import { Ingredient } from '../../shared/ingredient.model';
+
 import {
   ADD_INGREDIENT,
   ADD_INGREDIENTS,
@@ -13,7 +14,7 @@ import { ShoppingListActions } from './shopping-list.action';
 /** @description interface for ingredients */
 export interface ShoppingListState {
   ingredients: Ingredient[];
-  editedIngredient: Ingredient | any;
+  editedIngredient: Ingredient | null;
   editedIngredientIndex: number;
 }
 

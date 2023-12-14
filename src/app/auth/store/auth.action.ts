@@ -15,6 +15,7 @@ export const SIGNUP_START = '[Auth] Signup Start';
 export const CLEAR_ERROR = '[Auth] Clear Error';
 
 export const AUTO_LOGIN = '[Auth] Auto Login';
+export const CHECK_AUTH_STATUS = '[Auth] Check Auth Status';
 
 /**
  * @description Login user
@@ -94,6 +95,7 @@ export class SignupStart implements Action {
 export class ClearError implements Action {
   readonly type = CLEAR_ERROR;
 }
+
 /**
  * @description union type to export different types of action
  */

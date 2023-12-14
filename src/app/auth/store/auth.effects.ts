@@ -1,13 +1,16 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as AuthActions from './auth.action';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../../../environments/environmet';
-import { AuthSignIn, AuthSignUp } from '../auth.model';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../user.model';
+
+import * as AuthActions from './auth.action';
+import { AuthSignIn, AuthSignUp } from '../auth.model';
 import { AuthService } from '../auth.service';
+
+import { User } from '../user.model';
+
+import { environment } from '../../../environments/environmet';
 
 @Injectable()
 export class AuthEffects {
@@ -179,7 +182,7 @@ const handleAuthentication = (
   });
 };
 
-const handleError = (error: HttpErrorResponse) => {
+export const handleError = (error: HttpErrorResponse) => {
   let errorMessage = 'Something went wrong';
 
   if (!error?.error || !error?.error?.error) {

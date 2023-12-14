@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FirebaseAuthService } from '../firebase-auth.service';
 import { Subscription, map } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromRootReducer from '../../store/app.root-reducer';
 import { Router } from '@angular/router';
+
+import { FirebaseAuthService } from '../firebase-auth.service';
+import { ToastService } from '../toast.service';
+
+import * as fromRootReducer from '../../store/app.root-reducer';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -16,6 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private firebaseAuthService: FirebaseAuthService,
+    private toastService: ToastService,
     private store: Store<fromRootReducer.AppState>,
     private router: Router
   ) {}
@@ -40,9 +44,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleFetchRecipes(): void {
+    this.firebaseAuthService.getAllRecipes().subscribe();
+  }
+
   handleLogOut(): void {
     this.router.navigate(['/auth']);
-    localStorage.removeItem('_token')
+    localStorage.removeItem('_token');
+    this.toastService.showInfo('See you again', 'Logged out successfully');
     this.isUserAuthenticated = false;
     this.isLogOut = true;
   }

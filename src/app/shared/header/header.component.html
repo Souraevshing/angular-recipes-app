@@ -1,6 +1,7 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<nav class="header">
+  <div class="container">
+    <div class="navbar-header card-header text-body secondary">
       <a
         routerLink="/recipes"
         routerLinkActive="active-nav-link"
@@ -28,7 +29,7 @@
           <a
             style="
               cursor: pointer;
-              color: mediumspringgreen;
+              color: #337ab7;
               font-weight: 400;
               letter-spacing: 2px;
             "
@@ -52,7 +53,7 @@
             <span class="glyphicon glyphicon-log-out"></span
           ></a>
         </li>
-        <li class="dropdown" toggleDropdown *ngIf="isUserAuthenticated">
+        <li class="dropdown" appToggleDropdown *ngIf="isUserAuthenticated">
           <a
             style="cursor: pointer; background-color: black; color: #fff"
             class="dropdown-toggle manage-nav-link"
@@ -65,9 +66,11 @@
                 Save Recipes
               </a>
             </li>
-            <!-- <li>
-              <a style="cursor: pointer"> Fetch Recipes </a>
-            </li> -->
+            <li>
+              <a style="cursor: pointer" (click)="handleFetchRecipes()">
+                Fetch Recipes
+              </a>
+            </li>
           </ul>
         </li>
       </ul>

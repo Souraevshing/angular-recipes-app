@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormArray, Validators, FormBuilder } from '@angular/forms';
+
 import { RecipeService } from '../recipe.service';
 
 @Component({
@@ -56,7 +58,7 @@ export class RecipeEditComponent implements OnInit {
     );
   }
 
-  onDeleteIngredient(index: number) {
+  onDeleteIngredient(_index: number) {
     (this.recipeEditForm.get('ingredients') as FormArray).clear();
   }
 

@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { RecipeService } from '../recipes/recipe.service';
-import { Observable, exhaustMap, map, pipe, take, tap } from 'rxjs';
-import { Recipe } from '../recipes/recipe.model';
-import { environment } from '../../environments/environmet';
-import { AuthService } from '../auth/auth.service';
-import * as fromRootReducer from '../store/app.root-reducer';
+import { HttpClient } from '@angular/common/http';
+import { exhaustMap, map, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
+
+import * as fromRootReducer from '../store/app.root-reducer';
+
+import { AuthService } from '../auth/auth.service';
+
+import { RecipeService } from '../recipes/recipe.service';
+import { Recipe } from '../recipes/recipe.model';
+
+import { environment } from '../../environments/environmet';
 
 @Injectable({
   providedIn: 'root',

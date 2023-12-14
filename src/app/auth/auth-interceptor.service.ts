@@ -7,8 +7,9 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, exhaustMap, map, take } from 'rxjs';
-import * as fromRootReducer from '../store/app.root-reducer';
 import { Store } from '@ngrx/store';
+
+import * as fromRootReducer from '../store/app.root-reducer';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +25,9 @@ export class AuthInterceptor implements HttpInterceptor {
    */
 
   intercept(
-    req: HttpRequest<any>,
+    req: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     return this.store.select('auth').pipe(
       take(1),
       map((authState) => {

@@ -15,30 +15,28 @@
           "error",
           {
             "type": "attribute",
-            "prefix": ["app", "titleCase", "camelCase"],
-            "style": ["camelCase", "PascalCase"]
+            "prefix": "app",
+            "style": "camelCase"
           }
         ],
         "@angular-eslint/component-selector": [
           "error",
           {
             "type": "element",
-            "prefix": ["app", "titleCase", "camelCase"],
-            "style": ["camelCase", "PascalCase"]
+            "prefix": "app",
+            "style": "kebab-case"
           }
-        ]
+        ],
+        "@angular-eslint/template/interactive-supports-focus": ["off"]
       }
     },
     {
-      "files": ["*.html", "*.ts", "*.js", "*.json"],
+      "files": ["*.html"],
       "extends": [
         "plugin:@angular-eslint/template/recommended",
         "plugin:@angular-eslint/template/accessibility"
       ],
-      "rules": {
-        "semi": ["error", "always"],
-        "quotes": ["error", "double"]
-      }
+      "rules": {}
     }
   ]
 }

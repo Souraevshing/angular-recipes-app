@@ -1,4 +1,6 @@
+/* eslint-disable no-case-declarations */
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { User } from '../user.model';
 import * as AuthActions from './auth.action';
 

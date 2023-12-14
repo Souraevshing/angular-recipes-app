@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 
 //adding Directive decorator to use as a custom directive
-@Directive({ selector: '[toggleDropdown]' })
-export class Dropdown {
+@Directive({ selector: '[appToggleDropdown]' })
+export class DropdownDirective {
   constructor(private elementRef: ElementRef) {}
 
   //HostBinding is used to update the host element of the directive if it changes, here is `isOpen` is false,

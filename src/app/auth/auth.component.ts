@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastService } from '../shared/toast.service';
 import { Store } from '@ngrx/store';
+import { firstValueFrom } from 'rxjs';
+
+import { ToastService } from '../shared/toast.service';
+
 import * as fromRootReducer from '../store/app.root-reducer';
 import * as AuthActions from './store/auth.action';
+
+import { handleError } from './store/auth.effects';
 
 @Component({
   selector: 'app-auth',
@@ -76,13 +81,13 @@ export class AuthComponent implements OnInit {
     }
   }
 
-  signInUser(): void {
+  async signInUser(): Promise<void> {
     if (this.authForm.valid) {
       const email = this.authForm.value.email;
       const password = this.authForm.value.password;
       const returnSecureToken: boolean = true;
 
-      //dispatching login action and passing email, password, returnSecureToken
+      // Dispatching login action and passing email, password, returnSecureToken
       this.store.dispatch(
         new AuthActions.LoginStart({
           email: email,
@@ -91,20 +96,23 @@ export class AuthComponent implements OnInit {
         })
       );
 
-      //select auth from store by subscribing to state's error property
-      this.store.select('auth').subscribe((authState) => {
-        if (!authState.loginError) {
-          //this.router.navigate(['/recipes']);
+      try {
+        // Wait for the asynchronous login process to complete
+        const authState = await firstValueFrom(this.store.select('auth'));
+
+        if (handleError(authState.loginError!)) {
+          this.toastService.showError(
+            'Unexpected error occurred',
+            'Something went wrong!'
+          );
+        } else {
           this.toastService.showSuccess(`Welcome ${email}`, 'Login successful');
         }
-        if (authState.loginError) {
-          this.toastService.showError(
-            `${authState.loginError.error}`,
-            `Something went wrong!`
-          );
-        }
+      } catch (error) {
+        console.error('An error occurred during login:', error);
+      } finally {
         this.authForm.reset();
-      });
+      }
     }
   }
 }

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Ingredient } from '../../shared/ingredient.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
+
 import * as ShoppingListActions from '../store/shopping-list.action';
 import * as fromShoppingList from '../store/shopping-list.reducer';
 
+import { Ingredient } from '../../shared/ingredient.model';
 @Component({
   selector: 'app-shopping-edit',
   templateUrl: './shopping-edit.component.html',
@@ -34,7 +35,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.subscription = this.store.select('shoppingList').subscribe((state) => {
       if (state.editedIngredientIndex > -1) {
         this.editMode = true;
-        this.currentlyEditedItem = state.editedIngredient;
+        this.currentlyEditedItem = state.editedIngredient!;
         this.shoppingEditForm.setValue({
           name: this.currentlyEditedItem.name,
           amount: this.currentlyEditedItem.amount,

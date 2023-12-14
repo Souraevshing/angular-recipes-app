@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+
 import * as fromRootReducer from './store/app.root-reducer';
 import * as AuthActions from './auth/store/auth.action';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,9 @@ import { Store } from '@ngrx/store';
 })
 export class AppComponent implements OnInit {
   constructor(private store: Store<fromRootReducer.AppState>) {}
-  //commented since this block of code is redundant
+  /**
+   * @deprecated implemented redux, therefore now not using it
+   */
   //currentComponent: string = 'recipe';
 
   // handleNavigate(path: string): void {

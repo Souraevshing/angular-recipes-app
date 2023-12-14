@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@angular/core';
 import {
-  CanActivate,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
+  CanActivate,
   Router,
+  RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
 import { Observable, map, take } from 'rxjs';
 import { Store } from '@ngrx/store';
+
 import * as fromRootReducer from '../store/app.root-reducer';
 
 @Injectable({ providedIn: 'root' })
@@ -18,8 +20,8 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    _route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot
   ): boolean | UrlTree | Observable<boolean | UrlTree> {
     return this.store.select('auth').pipe(
       take(1),
