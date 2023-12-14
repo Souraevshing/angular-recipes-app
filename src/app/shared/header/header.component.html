@@ -49,7 +49,12 @@
           </a>
         </li>
         <li *ngIf="isUserAuthenticated">
-          <a style="cursor: pointer" (click)="handleLogOut()">
+          <a
+            style="cursor: pointer"
+            (click)="handleLogOut()"
+            (keyup.enter)="handleLogOut()"
+            tabindex="0"
+          >
             <span class="glyphicon glyphicon-log-out"></span
           ></a>
         </li>
@@ -62,12 +67,22 @@
           ></a>
           <ul class="dropdown-menu">
             <li>
-              <a style="cursor: pointer" (click)="handleSaveRecipes()">
+              <a
+                style="cursor: pointer"
+                (click)="handleSaveRecipes()"
+                ((keyup).enter)="handleSaveRecipes()"
+                tabindex="0"
+              >
                 Save Recipes
               </a>
             </li>
             <li>
-              <a style="cursor: pointer" (click)="handleFetchRecipes()">
+              <a
+                style="cursor: pointer"
+                (click)="handleFetchRecipes()"
+                (keyup.enter)="handleFetchRecipes()"
+                tabindex="0"
+              >
                 Fetch Recipes
               </a>
             </li>

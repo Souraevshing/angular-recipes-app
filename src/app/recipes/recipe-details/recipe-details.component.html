@@ -1,4 +1,3 @@
-<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <div class="row">
   <div class="col-xs-12">
     <img
@@ -22,17 +21,29 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-          <a (click)="handleAddRecipeIngredients()" style="cursor: pointer"
+          <a
+            (click)="handleAddRecipeIngredients()"
+            (keyup.enter)="handleAddRecipeIngredients()"
+            style="cursor: pointer"
+            tabindex="0"
             >Add to Shopping List</a
           >
         </li>
         <li>
-          <a style="cursor: pointer" (click)="handleEditRecipe()"
+          <a
+            style="cursor: pointer"
+            (click)="handleEditRecipe()"
+            (keyup.enter)="handleEditRecipe()"
+            tabindex="0"
             >Edit Recipe</a
           >
         </li>
         <li>
-          <a style="cursor: pointer" (click)="handleDeleteRecipe()"
+          <a
+            style="cursor: pointer"
+            (click)="handleDeleteRecipe()"
+            (keyup.enter)="handleDeleteRecipe()"
+            tabindex="0"
             >Delete Recipe</a
           >
         </li>
